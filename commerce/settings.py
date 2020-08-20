@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '6ps8j!crjgrxt34cqbqn7x&b3y%(fn
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False' #changed for heroku
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['shoumik-auctions.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
