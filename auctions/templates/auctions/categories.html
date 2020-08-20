@@ -1,0 +1,27 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>List of categories:</h2>
+
+    {% if Categories %}
+        <ul>
+            {% for category in Categories %}
+                <li><a href="category/{{category.name}}">{{category.name}}</a></li>
+            {% endfor %}
+        </ul>    
+    {% else %}
+        <h6 class="text-danger" style="margin-top:10px; margin-bottom: 10px;"> There are no categories added.</h6>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        <form action="" method="POST">
+            <!-- Add a text input to add a new category -->
+            {% csrf_token %}
+            <input type="text" name="newcategory">
+            <input type="submit" name="category" value="Add category">
+        </form>
+        {% if message %}
+            <p class="text-danger">{{message}}</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}

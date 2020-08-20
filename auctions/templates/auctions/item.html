@@ -1,0 +1,74 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+        <h1 class="display-4">{{Item.title}}</h1>
+
+        {% if user.is_authenticated %}
+        <form action="{{Item.pk}}" method="POST">
+                {% if Watching %}
+                        {% csrf_token %}
+                        <input type="submit" name="nowatch" value="Remove from watchlist" class="btn-danger">
+                {% else %}
+                        {% csrf_token %}
+                        <input type="submit" name="watch" value="Add to watchlist" class="btn-success">
+                {% endif %}
+        </form>
+        {% endif %}
+
+        <h4 style="margin-top: 20px;"><b>Price: </b>${{price}} ({{bidsplaced}} bids till now)</h4>
+        {% if Item.active and Item.owner != user %}
+                {% if user.is_authenticated %}
+                        <form action="{{Item.pk}}" method="post">
+                                {% csrf_token %}
+                                <table class="table table-responsive">
+                                {{ bidform.as_table }}
+                                </table>
+                                <input class="btn-primary" type="submit" name="bid" value="Place bid" style="margin-left: 100px;">
+                        </form>
+                        {% if message %}
+                                <p>{{message}}</p>
+                        {% endif %}
+                {% endif %}
+        {% elif Item.active %}
+                {% if user.is_authenticated %}
+                        <form action="{{Item.pk}}" method="post">
+                                {% csrf_token %}
+                                <input type="submit" name="close" value="Close this item" class="btn-danger">
+                        </form>
+                {% endif %}        
+        {% else %}
+                {% if Item.winner == user %}
+                        <p class="text-success" style="margin:20px;"> Congratulations <b>{{user}}</b>! You are now the proud owner of this item. Thank you for using our platform!</p>
+                {% else %}
+                        <pre style="margin:20px ;">This item is not for auction anymore. It now belongs to <b>{{Item.winner}}</b>.</pre> 
+                {% endif %}
+        {% endif %}
+
+
+        <img src={{Item.image}} class="img-thumbnail" style="margin-top: 20px;">
+        <p class="lead"><mark>{{Item.description}}</mark></p>
+
+
+        {% if comments %}
+                <h4> Comments: </h4>
+                <table class="table table-responsive">
+                {% for comment in comments %}
+                        <tr>
+                                <td style="vertical-align: middle;"><b>{{comment.user}}</b></td>
+                                <td style="vertical-align: middle;">{{comment.content}}</td>
+                        </tr>
+                {%endfor%}
+                </table>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+        <form action="{{Item.pk}}" method="post">
+                {% csrf_token %}
+                <table class="table table-responsive">
+                  {{ commentform.as_table }}
+                </table>
+                <input class="btn-primary" type="submit" name="commented" value="Add comment" style="margin-left: 100px;">
+        </form>
+        {% endif %}
+              
+{% endblock %}

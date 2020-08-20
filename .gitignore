@@ -1,0 +1,5 @@
+#adding for heroku
+
+*.bak
+
+*.sqlite3

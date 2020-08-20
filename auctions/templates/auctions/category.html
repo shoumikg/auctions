@@ -1,0 +1,15 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Items in {{Category.name}}:</h2>
+
+    {% if Items %}
+        <ul>
+            {% for entry in Items %}
+                <li><a href="{% url 'items' entry.id %}">{{entry.title}}</a></li>
+            {% endfor %}
+        </ul>    
+    {% else %}
+        <p class="text-danger" style="margin-top: 20px;"> There are no items in this category.</p>
+    {% endif %}
+{% endblock %}
